@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To do Lists</title>
+</head>
+<body>
+    <h1>
+        To Do Lists
+    </h1>
+    <ul id="todo-lists">
+    </ul>
+    <div class="no-contents">
+        <p>
+            Sorry! No contents!
+        </p>
+    </div>
+
+    <div class="toDosEditor">
+        <input type="text" class="content" />
+        <button class="add">添加</button>
+    </div>
+
+    <script>
+        var contents = [];
+
+        function addTodo(content) {
+            contents.push(content);
+
+            renderTodo()
+        }
+
+        function removeTodo(index) {
+            contents.splice(index, 1);
+            renderTodo()
+        }
+
+        function renderTodo() {
+            var todoList = document.getElementById('todo-lists');
+            var toDoText = '';
+            for (var i=0; i<contents.length; i++) {
+                toDoText = toDoText + '<li>' + contents[i] + '</li> <button data-id='+ i +' class="delete">删除</button>';
+            }
+            todoList.innerHTML = toDoText;
+
+            if (toDoText === '') {
+                document.querySelector('.no-contents').style.display = 'block';
+            } else {
+                document.querySelector('.no-contents').style.display = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 增加方法
+            document.querySelector('.add').addEventListener('click', function() {
+                var content = document.querySelector('.content').value;
+                if(!content) {
+                    alert('请输入内容');
+                    return;
+                }
+                addTodo(content);
+                document.querySelector('.content').value = '';
+            });
+
+            // 删除方法
+            document.querySelector('#todo-lists').addEventListener('click', function(e) {
+                if (e.target.className === 'delete') {
+                    var index = e.target.dataset.id;
+                    removeTodo(index);
+                }
+            });
+
+        }, false)
+    </script>
+</body>
+</html>
